@@ -44,6 +44,8 @@ public class MainActivity extends Activity {
     private final static String PLUGIN_APK = PLUGIN_NAME + ".apk";
     private final static String PLUGIN_PATH = "external" + File.separator + PLUGIN_APK;
 
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +91,9 @@ public class MainActivity extends Activity {
                 }, 1000);
             }
         });
+
+        // 刻意使用Thread的ClassLoader
+        testThreadClassLoader();
     }
 
     private static final int REQUEST_CODE_DEMO1 = 0x011;
@@ -99,6 +104,12 @@ public class MainActivity extends Activity {
         if (requestCode == REQUEST_CODE_DEMO1 && resultCode == RESULT_CODE_DEMO1) {
             Toast.makeText(this, data.getStringExtra("data"), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void testThreadClassLoader() {
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        Log.e(TAG, "testThreadClassLoader: Thread.current.classLoader=" + cl + "; equals=" +
+                (cl == getClassLoader()));
     }
 
     /**

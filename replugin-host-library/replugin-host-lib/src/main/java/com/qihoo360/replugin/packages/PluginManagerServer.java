@@ -289,7 +289,6 @@ public class PluginManagerServer {
             }
             if (instPli.getVersion() > curPli.getVersion()) {
                 // 高版本升级
-                instPli.setIsThisPendingUpdateInfo(true);
                 curPli.setPendingUpdate(instPli);
                 curPli.setPendingDelete(null);
                 curPli.setPendingCover(null);
@@ -305,6 +304,9 @@ public class PluginManagerServer {
                     LogDebug.w(TAG, "updateOrLater: Plugin need update same version. clear PendingDelete.");
                 }
             }
+
+            // 设置其Parent为curPli，在PmBase.newPluginFound时会用到
+            instPli.setParentInfo(curPli);
         } else {
             if (LogDebug.LOG) {
                 LogDebug.i(TAG, "updateOrLater: Not running. Update now! pn=" + curPli.getName());
